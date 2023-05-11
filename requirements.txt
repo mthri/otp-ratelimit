@@ -1,0 +1,4 @@
+Django==4.2.1
+PyMySQL==1.0.3
+python-decouple==3.8
+redis==4.5.5
