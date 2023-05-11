@@ -1,0 +1,21 @@
+{% extends 'register/base.html' %}
+
+{% block title %}429 Too Many Requests{% endblock %}
+{% block head %}
+<style>
+body {
+    font-family: 'Vazir', sans-serif;
+  }
+</style>
+
+{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 mx-auto text-center">
+      <h1 class="display-4 mt-5 mb-3">429 Too Many Requests</h1>
+      <p class="lead mb-4"><strong>{{message}}</strong></p>
+    </div>
+  </div>
+</div>
+{% endblock %}

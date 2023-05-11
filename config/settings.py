@@ -25,6 +25,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'register.middleware.IPBlockMiddleware',
+    
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -75,7 +77,7 @@ AUTH_USER_MODEL = 'register.User'
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": "redis://username:password@127.0.0.1:6379",
+        "LOCATION": "redis://"+config('REDIS_HOST_PORT', default='127.0.0.1:6379'),
     }
 }
 
