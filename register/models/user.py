@@ -36,4 +36,5 @@ class User(AbstractUser):
 
     objects = UserManager()
     USERNAME_FIELD = 'phone'
+    REQUIRED_FIELDS = ['username', 'last_name', 'first_name']
     
