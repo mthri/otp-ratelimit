@@ -25,14 +25,47 @@ def failed_login(request: HttpRequest) -> None:
     ip = extract_ip_from_request(request)
     ip_cache_count = cache.get(FAILED_LOGIN_IP_PREFIX+ip)
     if ip_cache_count == None:
-        ip_cache_count = 0
+        ip_cache_count = {
+            'failed_login': 0
+        }
     
-    logging.info(f'set {ip} as failedlogin')
-    cache.set(FAILED_LOGIN_IP_PREFIX+ip, ip_cache_count+1, FAILED_LOGIN_IP_TIMEOUT)
+    if not ip_cache_count.get('failed_login', False):
+        ip_cache_count['failed_login'] = 0
+    
+    ip_cache_count['failed_login'] += 1
+    logging.info(f'set {ip} as failed login')
+    cache.set(FAILED_LOGIN_IP_PREFIX+ip, ip_cache_count, FAILED_LOGIN_IP_TIMEOUT)
 
 def success_login(request: HttpRequest) -> None:
     ip = extract_ip_from_request(request)
     cache.delete(FAILED_LOGIN_IP_PREFIX+ip)
     logging.info(f'remove ip {ip} from cache')
 
+def success_send_otp(request: HttpRequest) -> None:
+    ip = extract_ip_from_request(request)
+    ip_cache_count = cache.get(FAILED_LOGIN_IP_PREFIX+ip)
+    if ip_cache_count == None:
+        ip_cache_count = {
+            'success_send_otp': 0
+        }
+    
+    if not ip_cache_count.get('success_send_otp', False):
+        ip_cache_count['success_send_otp'] = 0
+    
+    ip_cache_count['success_send_otp'] += 1
+    cache.set(FAILED_LOGIN_IP_PREFIX+ip, ip_cache_count, FAILED_LOGIN_IP_TIMEOUT)
+
+def failed_enter_otp(request: HttpRequest) -> None:
+    ip = extract_ip_from_request(request)
+    ip_cache_count = cache.get(FAILED_LOGIN_IP_PREFIX+ip)
+    if ip_cache_count == None:
+        ip_cache_count = {
+            'failed_enter_otp': 0
+        }
+    
+    if not ip_cache_count.get('failed_enter_otp', False):
+        ip_cache_count['failed_enter_otp'] = 0
+    
+    ip_cache_count['failed_enter_otp'] += 1
+    cache.set(FAILED_LOGIN_IP_PREFIX+ip, ip_cache_count, FAILED_LOGIN_IP_TIMEOUT)
     

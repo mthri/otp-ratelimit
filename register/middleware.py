@@ -13,10 +13,23 @@ class IPBlockMiddleware:
 
     def __call__(self, request: HttpRequest):
         ip = extract_ip_from_request(request)
-        ip_cache_count = cache.get(FAILED_LOGIN_IP_PREFIX+ip)
+        ip_cache = cache.get(FAILED_LOGIN_IP_PREFIX+ip, {})
+
+        block_it = False
+
+        if conut := ip_cache.get('success_send_otp', False):
+            if conut >= MAX_ALLOWED_FAIL_LOGIN:
+                block_it = True
         
-        if ip_cache_count != None and ip_cache_count > MAX_ALLOWED_FAIL_LOGIN and \
-            request.path not in ['/429', '/429/']:
+        if conut := ip_cache.get('failed_enter_otp', False):
+            if conut >= MAX_ALLOWED_FAIL_LOGIN:
+                block_it = True
+
+        if conut := ip_cache.get('failed_login', False):
+            if conut >= MAX_ALLOWED_FAIL_LOGIN:
+                block_it = True
+        
+        if block_it and request.path not in ['/429', '/429/']:
             return redirect('error-429')
 
         response = self.get_response(request)
