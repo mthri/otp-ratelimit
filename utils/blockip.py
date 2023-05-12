@@ -30,5 +30,9 @@ def failed_login(request: HttpRequest) -> None:
     logging.info(f'set {ip} as failedlogin')
     cache.set(FAILED_LOGIN_IP_PREFIX+ip, ip_cache_count+1, FAILED_LOGIN_IP_TIMEOUT)
 
+def success_login(request: HttpRequest) -> None:
+    ip = extract_ip_from_request(request)
+    cache.delete(FAILED_LOGIN_IP_PREFIX+ip)
+    logging.info(f'remove ip {ip} from cache')
 
     
