@@ -1,0 +1,28 @@
+{% extends 'register/base.html' %}
+{% load static %}
+
+{% block title %}ورود{% endblock %}
+{% block head %}
+<link href="{% static 'register/check_phone.css' %}" rel="stylesheet">
+<style>
+    body {
+        font-family: 'Vazir', sans-serif;
+    }
+</style>
+
+{% endblock %}
+{% block content %}
+<form class="form-signin" method="post">
+    {% csrf_token %}
+    <h1 class="h3 mb-3 font-weight-normal d-flex justify-content-center">ورود</h1>
+    <input type="text" id="phone" name="phone" class="form-control" style="direction: rtl;" maxlength="11" minlength="11"
+        placeholder="تلفن همراه" required autofocus>
+        <div class="pt-2 pb-2" style="color: red; float: right;">
+            {{form.phone.errors|join:", "}}
+        </div>
+        
+    <div class="pt-3">
+        <button class="btn btn-lg btn-primary btn-block " type="submit">تایید</button>
+    </div>
+</form>
+{% endblock %}
